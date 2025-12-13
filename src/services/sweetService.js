@@ -25,3 +25,10 @@ exports.purchase = async id => {
   )
   return sweet
 }
+
+exports.restock = async (id, amount) => {
+  const sweet = await Sweet.findById(id)
+  if (!sweet) return null
+  sweet.quantity += amount
+  return sweet.save()
+}
