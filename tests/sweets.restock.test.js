@@ -12,10 +12,11 @@ beforeAll(async () => {
   const admin = await request(app)
     .post('/api/auth/register')
     .send({
-      username: 'admin',
-      email: 'admin@restock.com',
-      password: '123456'
+        username: 'admin',
+        email: 'admin@restock.com',
+        password: '123456'
     })
+
 
   const user = await request(app)
     .post('/api/auth/register')

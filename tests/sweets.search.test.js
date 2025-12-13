@@ -10,10 +10,11 @@ beforeAll(async () => {
   const res = await request(app)
     .post('/api/auth/register')
     .send({
-      username: 'user',
-      email: 'search@test.com',
-      password: '123456'
+        username: 'admin',
+        email: 'admin@search.com',
+        password: '123456'
     })
+
 
   token = res.body.token
 
