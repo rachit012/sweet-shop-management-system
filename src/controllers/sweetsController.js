@@ -14,3 +14,9 @@ exports.searchSweets = async (req, res) => {
   const sweets = await sweetService.search(req.query)
   res.status(200).json(sweets)
 }
+
+exports.purchaseSweet = async (req, res) => {
+  const sweet = await sweetService.purchase(req.params.id)
+  if (!sweet) return res.status(400).end()
+  res.status(200).json(sweet)
+}

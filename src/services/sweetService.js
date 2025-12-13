@@ -14,6 +14,12 @@ exports.search = ({ name, category, minPrice, maxPrice }) => {
       }
     })
   }
-
   return Sweet.find(filter)
+}
+
+exports.purchase = async id => {
+  const sweet = await Sweet.findById(id)
+  if (!sweet || sweet.quantity === 0) return null
+  sweet.quantity -= 1
+  return sweet.save()
 }
