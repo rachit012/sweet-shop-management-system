@@ -6,8 +6,7 @@ exports.protect = (req, res, next) => {
 
   const token = header.split(' ')[1]
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'test_secret')
-    req.user = decoded
+    req.user = jwt.verify(token, process.env.JWT_SECRET || 'test_secret')
     next()
   } catch {
     res.status(401).end()
@@ -15,6 +14,6 @@ exports.protect = (req, res, next) => {
 }
 
 exports.admin = (req, res, next) => {
-  if (!req.user || req.user.role !== 'admin') return res.status(403).end()
+  if (req.user.role !== 'admin') return res.status(403).end()
   next()
 }
