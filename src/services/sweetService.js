@@ -18,8 +18,10 @@ exports.search = ({ name, category, minPrice, maxPrice }) => {
 }
 
 exports.purchase = async id => {
-  const sweet = await Sweet.findById(id)
-  if (!sweet || sweet.quantity === 0) return null
-  sweet.quantity -= 1
-  return sweet.save()
+  const sweet = await Sweet.findOneAndUpdate(
+    { _id: id, quantity: { $gt: 0 } },
+    { $inc: { quantity: -1 } },
+    { new: true }
+  )
+  return sweet
 }
