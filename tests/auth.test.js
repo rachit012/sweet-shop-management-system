@@ -47,3 +47,49 @@ describe('Auth Register', () => {
     expect(res.statusCode).toBe(400)
   })
 })
+
+describe('Auth Login', () => {
+  beforeEach(async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({
+        username: 'loginuser',
+        email: 'login@test.com',
+        password: 'password123'
+      })
+  })
+
+  it('logs in user with correct credentials', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'login@test.com',
+        password: 'password123'
+      })
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body).toHaveProperty('token')
+  })
+
+  it('rejects login with wrong password', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'login@test.com',
+        password: 'wrongpassword'
+      })
+
+    expect(res.statusCode).toBe(400)
+  })
+
+  it('rejects login for non-existing user', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'nouser@test.com',
+        password: 'password123'
+      })
+
+    expect(res.statusCode).toBe(400)
+  })
+})
