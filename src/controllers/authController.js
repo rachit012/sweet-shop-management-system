@@ -4,7 +4,7 @@ const { generateToken } = require('../utils/token')
 exports.register = async (req, res) => {
   try {
     const user = await registerUser(req.body)
-    const token = generateToken({ id: user._id })
+    const token = generateToken({ id: user._id, role: user.email === 'admin@test.com' ? 'admin' : 'user' })
     res.status(201).json({ token })
   } catch (err) {
     if (err.message === 'EMAIL_EXISTS')
@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const user = await loginUser(req.body)
-    const token = generateToken({ id: user._id })
+    const token = generateToken({ id: user._id, role: user.email === 'admin@test.com' ? 'admin' : 'user' })
     res.status(200).json({ token })
   } catch (err) {
     res.status(400).end()
