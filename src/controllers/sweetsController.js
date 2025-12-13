@@ -33,3 +33,8 @@ exports.updateSweet = async (req, res) => {
   res.status(200).json(sweet)
 }
 
+exports.deleteSweet = async (req, res) => {
+  const deleted = await sweetService.remove(req.params.id)
+  if (!deleted) return res.status(400).end()
+  res.status(200).end()
+}

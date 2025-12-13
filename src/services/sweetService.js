@@ -36,3 +36,9 @@ exports.restock = async (id, amount) =>
 exports.update = (id, data) =>
   Sweet.findByIdAndUpdate(id, data, { new: true })
 
+exports.remove = async id => {
+  const sweet = await Sweet.findById(id)
+  if (!sweet) return null
+  await sweet.deleteOne()
+  return true
+}
