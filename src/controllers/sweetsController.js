@@ -27,3 +27,9 @@ exports.restockSweet = async (req, res) => {
   res.status(200).json(sweet)
 }
 
+exports.updateSweet = async (req, res) => {
+  const sweet = await sweetService.update(req.params.id, req.body)
+  if (!sweet) return res.status(400).end()
+  res.status(200).json(sweet)
+}
+

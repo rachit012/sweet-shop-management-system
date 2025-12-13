@@ -4,7 +4,8 @@ const {
   getAllSweets,
   searchSweets,
   purchaseSweet,
-  restockSweet
+  restockSweet,
+  updateSweet
 } = require('../controllers/sweetsController')
 const { protect, admin } = require('../middleware/auth')
 
@@ -13,6 +14,7 @@ router.get('/', protect, getAllSweets)
 router.get('/search', protect, searchSweets)
 router.post('/:id/purchase', protect, purchaseSweet)
 router.post('/:id/restock', protect, admin, restockSweet)
+router.put('/:id', protect, admin, updateSweet)
 
 
 module.exports = router

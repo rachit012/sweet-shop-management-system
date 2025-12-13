@@ -26,9 +26,16 @@ exports.purchase = async id => {
   return sweet
 }
 
-exports.restock = async (id, amount) => {
+exports.restock = async (id, amount) =>
+  Sweet.findByIdAndUpdate(
+    id,
+    { $inc: { quantity: amount } },
+    { new: true }
+  )
+
+exports.update = async (id, data) => {
   const sweet = await Sweet.findById(id)
   if (!sweet) return null
-  sweet.quantity += amount
+  Object.assign(sweet, data)
   return sweet.save()
 }
