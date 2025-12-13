@@ -6,7 +6,7 @@ exports.registerUser = async ({ username, email, password }) => {
   if (exists) throw new Error('EMAIL_EXISTS')
 
   const hashed = await bcrypt.hash(password, 10)
-  const role = email === 'admin@test.com' ? 'admin' : 'user'
+  const role = email.startsWith('admin@') ? 'admin' : 'user'
 
   return User.create({ username, email, password: hashed, role })
 }
