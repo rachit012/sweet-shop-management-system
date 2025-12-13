@@ -33,9 +33,6 @@ exports.restock = async (id, amount) =>
     { new: true }
   )
 
-exports.update = async (id, data) => {
-  const sweet = await Sweet.findById(id)
-  if (!sweet) return null
-  Object.assign(sweet, data)
-  return sweet.save()
-}
+exports.update = (id, data) =>
+  Sweet.findByIdAndUpdate(id, data, { new: true })
+
