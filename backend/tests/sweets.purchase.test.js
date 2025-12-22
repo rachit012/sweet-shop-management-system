@@ -12,13 +12,14 @@ beforeAll(async () => {
   if (mongoose.connection.readyState !== 1) {
     await db.connect()
   }
+
   await db.clearDatabase()
-  
+
   const admin = await request(app)
     .post('/api/auth/register')
     .send({
       username: 'admin',
-      email: 'admin@delete.com',
+      email: 'admin@purchase.com',
       password: '123456',
       role: 'admin'
     })
@@ -29,7 +30,7 @@ beforeAll(async () => {
     .post('/api/auth/register')
     .send({
       username: 'user',
-      email: 'user@delete.com',
+      email: 'user@purchase.com',
       password: '123456'
     })
 
@@ -52,26 +53,21 @@ afterAll(async () => {
   await db.clearDatabase()
 })
 
-describe('Delete Sweet', () => {
-  it('rejects delete by non-admin', async () => {
+describe('Purchase Sweet', () => {
+  it('rejects purchase without authentication', async () => {
     const res = await request(app)
-      .delete(`/api/sweets/${sweetId}`)
-      .set('Authorization', `Bearer ${userToken}`)
+      .post(`/api/sweets/${sweetId}/purchase`)
+      .send({ quantity: 1 })
 
-    expect(res.statusCode).toBe(403)
+    expect(res.statusCode).toBe(401)
   })
 
-  it('deletes sweet when admin', async () => {
+  it('allows purchase for authenticated user', async () => {
     const res = await request(app)
-      .delete(`/api/sweets/${sweetId}`)
-      .set('Authorization', `Bearer ${adminToken}`)
+      .post(`/api/sweets/${sweetId}/purchase`)
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({ quantity: 1 })
 
     expect(res.statusCode).toBe(200)
-
-    const check = await request(app)
-      .get('/api/sweets')
-      .set('Authorization', `Bearer ${adminToken}`)
-
-    expect(check.body.length).toBe(0)
   })
 })
